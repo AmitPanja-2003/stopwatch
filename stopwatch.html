@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="stopwatch">
+        <h1 id="display">00:00:00:000</h1>
+        <button id="start">start</button>
+        <button id="stop">Stop</button>
+        <button id="reset">reset</button>
+        <button id="lap">Lap</button>
+    </div>
+    
+   
+    <ol id="item">
+
+    </ol>
+    <script>
+        let[mili,secound,minutes,hours]=[0,0,0,0];
+        let displayTime=document.getElementById("display");
+        let ol=document.querySelector("#item");
+        let timer=null;
+        function stopwatch(){
+            mili+=10;
+            if(mili==1000){
+                mili=0;
+                secound++;
+            }
+            
+            if(secound==60){
+                secound=0;
+                minutes++;
+            }
+            if(minutes==60){
+                minutes=0;
+                hours++;
+            }
+
+            let h=hours<10?"0"+hours:hours;
+            let m=minutes<10?"0"+minutes:minutes;
+            let s=secound<10?"0"+secound:secound;
+            let mi=mili<10?"00"+mili:mili<100?"0"+mili:mili;
+            displayTime.innerHTML=h+":"+m+":"+s+":"+mi;
+        }
+        document.querySelector("#start").addEventListener("click",watchstart);
+         function watchstart(){
+            if(timer!=null){
+                clearInterval(timer);
+            }
+           timer= setInterval(stopwatch,10);
+
+        }
+        document.querySelector("#stop").addEventListener('click',watchstop);
+        function watchstop(){
+            clearInterval(timer);
+        }
+         document.querySelector("#reset").addEventListener("click",watchreset);
+        function watchreset(){
+            clearInterval(timer);
+            [mili,secound,minutes,hours]=[0,0,0,0];
+            displayTime.innerText="00:00:00:000";
+           ol.innerHTML="";
+
+           
+           
+            
+        }
+        document.querySelector("#lap").addEventListener("click",watchlap);
+        function watchlap(){
+          let li= document.createElement("li");
+          li.innerText=displayTime.innerText;
+          ol.append(li);
+        }
+        
+    </script>
+</body>
+</html>
